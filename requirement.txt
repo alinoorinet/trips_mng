@@ -1,0 +1,12 @@
+npm install
+
+npm install --save-dev @vitejs/plugin-react
+import react from '@vitejs/plugin-react';
+plugins: [
+        laravel(['resources/js/app.jsx']),
+        react(),
+    ],
+
+npm i react axios bootstrap react-router-dom react-redux redux @reduxjs/toolkit react-toastify babel-preset-react
+
+php artisan install:api
