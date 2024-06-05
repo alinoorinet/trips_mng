@@ -5,13 +5,16 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 import {useFetchingTasksQuery} from "../api/tasks.js";
 import {updateTasks} from "../redux/slices/taskSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 
 
-export default function Tasks() {
-    const dispatch     = useDispatch();
+export default function Trips() {
+    const [key, setKey] = useState('home');
+    /*const dispatch     = useDispatch();
     const tasksStore = useSelector((state) => state.tasks.tasks);
     const [tasks, setTasks]   = useState(tasksStore)
     const {data, error, isFetching} = useFetchingTasksQuery();
@@ -36,32 +39,26 @@ export default function Tasks() {
     useEffect(() => {
         // console.log("tasksStore:", tasksStore)
         setTasks(tasksStore)
-    }, [tasksStore, dispatch])
+    }, [tasksStore, dispatch])*/
 
     return (
         <>
-            <Table striped bordered hover responsive>
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Assigned</th>
-                    <th>Assign to trip</th>
-                </tr>
-                </thead>
-                <tbody>
-                {
-                    tasks.map((task, index) => (
-                        <tr key={'task' + index}>
-                            <td>{index + 1}</td>
-                            <td>{task.title}</td>
-                            <td>{ task.assigned ? <span className="text-success">Yes</span> : <span className="text-danger">No</span> }</td>
-                            <td>{ task.assigned ? '' : <Button size="sm">Assign</Button> }</td>
-                        </tr>
-                    ))
-                }
-                </tbody>
-            </Table>
+            <Tabs
+                id="controlled-tab-example"
+                activeKey={key}
+                onSelect={(k) => setKey(k)}
+                className="mb-3"
+            >
+                <Tab eventKey="home" title="Home">
+                    Tab content for Home
+                </Tab>
+                <Tab eventKey="profile" title="Profile">
+                    Tab content for Profile
+                </Tab>
+                <Tab eventKey="contact" title="Contact" disabled>
+                    Tab content for Contact
+                </Tab>
+            </Tabs>
         </>
     )
 }

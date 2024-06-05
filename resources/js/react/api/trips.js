@@ -4,16 +4,16 @@ export const apiSlice = core.injectEndpoints({
     endpoints(builder) {
         return {
             fetchingTrips: builder.query({
-                query: () => `/trip`,
+                query: () => `/trips`,
                 keepUnusedDataFor: 0
             }),
-            deleteCustomer: builder.mutation({
+            /*deleteCustomer: builder.mutation({
                 query: (id) => ({
                     url: `/customer/delete/${id}`,
                     method: 'GET',
                     //body: credential,
                 }),
-            }),
+            }),*/
         }
     },
     overrideExisting: false,

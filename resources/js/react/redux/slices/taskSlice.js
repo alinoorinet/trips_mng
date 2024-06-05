@@ -1,14 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    tasks: [],
-    masks: []
+    tasks: []
 }
-
-export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
-    const response = await client.get('/fakeApi/posts')
-    return response.data
-})
 
 export const taskSlice = createSlice({
     name: 'tasks',
