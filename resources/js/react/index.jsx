@@ -1,5 +1,5 @@
 import React from 'react'
-// import './index.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App'
 
 import { store } from './redux/store'
