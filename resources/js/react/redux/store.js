@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from './slices/counterSlice'
+import taskSlice from './slices/taskSlice'
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { core } from "../api/core";
 
@@ -7,7 +7,7 @@ import { core } from "../api/core";
 export const store = configureStore({
     reducer: {
         [core.reducerPath]: core.reducer,
-        counter: counterReducer,
+        tasks: taskSlice,
     },
     middleware: (getDefaultMiddleware) => {
         return getDefaultMiddleware().concat(core.middleware)
