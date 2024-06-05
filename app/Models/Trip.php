@@ -9,6 +9,7 @@ class Trip extends Model
 {
     use HasFactory;
 
+    protected $table = 'trip';
     protected $fillable = [
         'customer_name',
         'begin_at',

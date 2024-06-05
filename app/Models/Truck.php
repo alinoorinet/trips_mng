@@ -9,6 +9,8 @@ class Truck extends Model
 {
     use HasFactory;
 
+    protected $table = 'truck';
+
     protected $fillable = [
         'type',
         'max_loading_weight',
