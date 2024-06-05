@@ -7,36 +7,36 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import {useFetchingTasksQuery} from "../api/tasks.js";
 import {updateTasks} from "../redux/slices/taskSlice.js";
 import { useDispatch, useSelector } from "react-redux";
+import {useFetchingTripsQuery} from "../api/trips.js";
 
 
 export default function Trips() {
-    const [key, setKey] = useState('home');
-    /*const dispatch     = useDispatch();
-    const tasksStore = useSelector((state) => state.tasks.tasks);
-    const [tasks, setTasks]   = useState(tasksStore)
-    const {data, error, isFetching} = useFetchingTasksQuery();
+    const {data, error, isFetching} = useFetchingTripsQuery();
+    const [currentTab, setCurrentTab] = useState('home');
+    const dispatch= useDispatch();
+    // const tasksStore = useSelector((state) => state.tasks.tasks);
+    const [trips, setTrips]   = useState([])
 
     useEffect(() => {
         if(!isFetching) {
             if(data) {
-                if(data.status === 200)
+                /*if(data.status === 200)
                     dispatch(updateTasks({
                         tasks: data.tasks,
                     }));
                 else
-                    alert('Fetching tasks failed')
+                    alert('Fetching trips failed')*/
             }
             else if(error) {
-                alert('Fetching tasks failed. Back Err. Please try later')
+                alert('Fetching trips failed. Back Err. Please try later')
                 // console.log("error",error);
             }
         }
     }, [isFetching]);
 
-    useEffect(() => {
+    /*useEffect(() => {
         // console.log("tasksStore:", tasksStore)
         setTasks(tasksStore)
     }, [tasksStore, dispatch])*/
@@ -45,19 +45,21 @@ export default function Trips() {
         <>
             <Tabs
                 id="controlled-tab-example"
-                activeKey={key}
-                onSelect={(k) => setKey(k)}
+                activeKey={currentTab}
+                onSelect={(k) => setCurrentTab(k)}
                 className="mb-3"
             >
-                <Tab eventKey="home" title="Home">
-                    Tab content for Home
-                </Tab>
-                <Tab eventKey="profile" title="Profile">
-                    Tab content for Profile
-                </Tab>
-                <Tab eventKey="contact" title="Contact" disabled>
-                    Tab content for Contact
-                </Tab>
+                { trips ?
+                    trips.map((trip, index) => (
+                        <Tab eventKey="home" title={trip.destination_addr}>
+                            {trip.destination_addr}
+                        </Tab>
+                    ))
+                    :
+                    <Tab eventKey="home" title="no trips">
+                        No trips have been created yet
+                    </Tab>
+                }
             </Tabs>
         </>
     )
