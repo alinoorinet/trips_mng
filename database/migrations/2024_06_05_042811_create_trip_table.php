@@ -18,7 +18,6 @@ return new class extends Migration
             $table->timestamp('end_at')->nullable();
             $table->string('load_content', 64);
             $table->integer('load_weight'); // in Kg
-            $table->integer('load_id')->unique();
             $table->text('destination_addr');
 
             $table->unsignedBigInteger('task_id')->nullable();

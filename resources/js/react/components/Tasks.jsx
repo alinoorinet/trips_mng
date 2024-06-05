@@ -8,6 +8,7 @@ import Table from 'react-bootstrap/Table';
 import {useFetchingTasksQuery} from "../api/tasks.js";
 import {updateTasks} from "../redux/slices/taskSlice.js";
 import { useDispatch, useSelector } from "react-redux";
+import {Link} from "react-router-dom";
 
 
 export default function Tasks() {
@@ -39,29 +40,35 @@ export default function Tasks() {
     }, [tasksStore, dispatch])
 
     return (
-        <>
-            <Table striped bordered hover responsive>
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Assigned</th>
-                    <th>Assign to trip</th>
-                </tr>
-                </thead>
-                <tbody>
-                {
-                    tasks.map((task, index) => (
-                        <tr key={'task' + index}>
-                            <td>{index + 1}</td>
-                            <td>{task.title}</td>
-                            <td>{ task.assigned ? <span className="text-success">Yes</span> : <span className="text-danger">No</span> }</td>
-                            <td>{ task.assigned ? '' : <Button size="sm">Assign</Button> }</td>
+        <Col md={4}>
+            <Card>
+                <Card.Header variant="top">Tasks List</Card.Header>
+                <Card.Body>
+                    <Card.Text>tasks must be assign to trips</Card.Text>
+                    <Table striped bordered hover responsive>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Assigned</th>
+                            <th>Assign to trip</th>
                         </tr>
-                    ))
-                }
-                </tbody>
-            </Table>
-        </>
+                        </thead>
+                        <tbody>
+                        {
+                            tasks.map((task, index) => (
+                                <tr key={'task' + index}>
+                                    <td>{index + 1}</td>
+                                    <td>{task.title}</td>
+                                    <td>{ task.assigned ? <span className="text-success">Yes</span> : <span className="text-danger">No</span> }</td>
+                                    <td>{ task.assigned ? '' : <Button size="sm">Assign</Button> }</td>
+                                </tr>
+                            ))
+                        }
+                        </tbody>
+                    </Table>
+                </Card.Body>
+            </Card>
+        </Col>
     )
 }

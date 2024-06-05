@@ -10,3 +10,9 @@ plugins: [
 npm i react axios bootstrap react-router-dom react-redux redux @reduxjs/toolkit react-toastify babel-preset-react
 
 php artisan install:api
+
+CREATE DATABASE trips CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+.env mysql password
+
+php artisan migrate
+php artisan db:seed

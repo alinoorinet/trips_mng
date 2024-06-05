@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::prefix('trips')->group(function () {
-    Route::get('/', [TripsController::class, 'index'])->name('trips_index');
+    Route::get('/',    [TripsController::class, 'index'])->name('trips_index');
+    Route::get('/add', [TripsController::class, 'add'])->name('trips_add');
 });
 Route::prefix('tasks')->group(function () {
     Route::get('/', [TasksController::class, 'index'])->name('tasks_index');

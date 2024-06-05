@@ -17,4 +17,8 @@ class Driver extends Model
         'last_mission_at',
         'user_id',
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -7,6 +7,10 @@ export const apiSlice = core.injectEndpoints({
                 query: () => `/trips`,
                 keepUnusedDataFor: 0
             }),
+            fetchingAddTripInit: builder.query({
+                query: () => `/trips/add`,
+                keepUnusedDataFor: 0
+            }),
             /*deleteCustomer: builder.mutation({
                 query: (id) => ({
                     url: `/customer/delete/${id}`,
@@ -20,5 +24,6 @@ export const apiSlice = core.injectEndpoints({
 });
 
 export const {
-    useFetchingTripsQuery
+    useFetchingTripsQuery,
+    useFetchingAddTripInitQuery,
 } = apiSlice

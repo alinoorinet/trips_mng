@@ -10,6 +10,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import {updateTasks} from "../redux/slices/taskSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import {useFetchingTripsQuery} from "../api/trips.js";
+import {Link} from "react-router-dom";
 
 
 export default function Trips() {
@@ -40,27 +41,36 @@ export default function Trips() {
         // console.log("tasksStore:", tasksStore)
         setTasks(tasksStore)
     }, [tasksStore, dispatch])*/
-
+    console.log("trips:", trips)
     return (
-        <>
-            <Tabs
-                id="controlled-tab-example"
-                activeKey={currentTab}
-                onSelect={(k) => setCurrentTab(k)}
-                className="mb-3"
-            >
-                { trips ?
-                    trips.map((trip, index) => (
-                        <Tab eventKey="home" title={trip.destination_addr}>
-                            {trip.destination_addr}
-                        </Tab>
-                    ))
-                    :
-                    <Tab eventKey="home" title="no trips">
-                        No trips have been created yet
-                    </Tab>
-                }
-            </Tabs>
-        </>
+        <Col md={8}>
+            <Card>
+                <Card.Header variant="top">Trips
+                    <Link to="/trips/add">
+                        <Button variant="success" className="float-end">New</Button>
+                    </Link>
+                </Card.Header>
+                <Card.Body>
+                    <Tabs
+                        id="controlled-tab-example"
+                        activeKey={currentTab}
+                        onSelect={(k) => setCurrentTab(k)}
+                        className="mb-3"
+                    >
+                        { trips.length ?
+                            trips.map((trip, index) => (
+                                <Tab eventKey={'trip-tab' + trip.id} title={trip.destination_addr}>
+                                    {trip.destination_addr}
+                                </Tab>
+                            ))
+                            :
+                            <Tab eventKey="no_trips" title="no trips">
+                                No trips have been created yet
+                            </Tab>
+                        }
+                    </Tabs>
+                </Card.Body>
+            </Card>
+        </Col>
     )
 }
