@@ -1,4 +1,4 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><a href="https://stki.ir" target="_blank"><img src="https://cdn-icons-png.freepik.com/512/974/974593.png" width="200"></a></p>
 
 ## About Trip Management
 
@@ -22,7 +22,7 @@ composer install
 CREATE DATABASE trips CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-3. Create tables:
+3. Create tables: before run the below command, make sure you have database user credential same in .env file.
 
 ```
 php artisan migrate
@@ -35,4 +35,12 @@ php artisan db:seed
 ```
 
 Front-End: we use React, Redux Toolkit, Vite Lastest version for spa purpose.
+1. Install packages:
+
+```
+npm install
+```
+
+## Demo image
+<img src="https://stki.ir/img/demo.png">
 
