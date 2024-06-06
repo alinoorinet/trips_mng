@@ -12,19 +12,21 @@ import {Link} from "react-router-dom";
 
 
 export default function Trips() {
-    const {data, error, isFetching} = useFetchingTripsQuery();
-    const [currentTab, setCurrentTab] = useState('home',);
+    const {data, error, isFetching, isLoading, currentData}   = useFetchingTripsQuery({ refetchOnMountOrArgChange: true });
+    const [currentTab, setCurrentTab] = useState('home');
     const dispatch   = useDispatch();
-    const tripsStore = useSelector((state) => state.trips.trips);
-    const [trips, setTrips] = useState([])
-
+    const trips = useSelector((state) => state.trips.trips);
+    console.log("isLoading", isLoading)
+    console.log("currentData", currentData)
     useEffect(() => {
         if(!isFetching) {
             if(data) {
-                if(data.status === 200)
-                    dispatch(updateTrips({
-                        trips: data.trips,
-                    }));
+                if(data.status === 200) {
+                    if (currentData.trips.length !== trips.length)
+                        dispatch(updateTrips({
+                            trips: data.trips,
+                        }));
+                }
                 else
                     alert('Fetching trips failed')
             }
@@ -36,11 +38,9 @@ export default function Trips() {
     }, [isFetching]);
 
     useEffect(() => {
-        // console.log("tasksStore:", tasksStore)
-        setTrips(tripsStore)
-        if (tripsStore.length)
-            setCurrentTabEvent('trip-tab-' +tripsStore[0].id)
-    }, [tripsStore, dispatch])
+        if (trips.length)
+            setCurrentTabEvent('trip-tab-' +trips[0].id)
+    }, [trips])
 
     const setCurrentTabEvent = (id) => {
         dispatch(setTab({
@@ -49,7 +49,6 @@ export default function Trips() {
         setCurrentTab(id)
     }
 
-    console.log("tripsStore:", tripsStore)
     return (
         <Col md={8}>
             <Card>

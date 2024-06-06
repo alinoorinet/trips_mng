@@ -1,6 +1,4 @@
-import React, {useState, useEffect} from 'react'
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
+import React, { useEffect} from 'react'
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -8,16 +6,17 @@ import Table from 'react-bootstrap/Table';
 import {useAssignToTripMutation, useFetchingTasksQuery} from "../api/tasks.js";
 import { updateTasks } from "../redux/slices/taskSlice.js";
 import { useDispatch, useSelector } from "react-redux";
+import { updateTrips } from "../redux/slices/tripSlice";
 
 
 export default function Tasks() {
-    const dispatch   = useDispatch();
-    const state = useSelector((state) => state);
-    const tasksStore = state.tasks.tasks
-    const tripCurrentTab = state.trips.currentTab
-    const [tasks, setTasks]  = useState(tasksStore)
     const {data, error, isFetching} = useFetchingTasksQuery();
+    const state   = useSelector((state) => state);
+    const tasks   = state.tasks.tasks
+    const trips   = state.trips.trips
+    const tripCurrentTab = state.trips.currentTab
     const [assignToTrip, assignToTripResult] = useAssignToTripMutation()
+    const dispatch   = useDispatch();
 
     useEffect(() => {
         if(!isFetching) {
@@ -36,16 +35,12 @@ export default function Tasks() {
         }
     }, [isFetching]);
 
-    useEffect(() => {
-        // console.log("tasksStore:", tasksStore)
-        if (tasksStore)
-            setTasks(tasksStore)
-    }, [tasksStore, dispatch])
-    console.log("tasksStore:", tasksStore)
-    console.log("tasks", tasks)
 
     const assignEvent = (e, id) => {
         e.preventDefault()
+        const confi = confirm("Assign task to selected current trip tab?")
+        if(!confi)
+            return false;
         const trId = tripCurrentTab.split('trip-tab-')[1]
 
         const formData = new FormData()
@@ -55,15 +50,23 @@ export default function Tasks() {
             if (res.data) {
                 alert(res.data.res)
                 if (res.data.status === 200) {
+                    const newTrips = trips.map((trip,index) => {
+                        if (trip.id === parseInt(trId))
+                            return {...trip, task: res.data.task, task_id: res.data.task.id}
+                        return trip
+                    })
+                    dispatch(updateTrips({
+                        trips: newTrips
+                    }))
                     const newTasks = tasks.map((task,index) => {
                         if (task.id === id)
                             return {...task, assigned: 1}
                         return task
                     })
-                    console.log("newTasks", newTasks)
-                    dispatch(updateTasks(newTasks))
+                    dispatch(updateTasks({
+                        tasks: newTasks
+                    }))
                 }
-
             }
         })
     }

@@ -46,6 +46,12 @@ class TasksController extends Controller
                 'res'    => 'Already have a task',
             ]);
 
+        if($task->assigned)
+            return response()->json([
+                'status' => 102,
+                'res'    => 'Already assigned',
+            ]);
+
         $trip->task_id = $request->tsId;
         $trip->save();
 
@@ -54,6 +60,7 @@ class TasksController extends Controller
 
         return response()->json([
             'status' => 200,
+            'task'   => $task,
             'res'    => 'Assigned to trip successfully!',
         ]);
     }

@@ -10,7 +10,7 @@ export const tripSlice = createSlice({
     initialState,
     reducers: {
         addTrip: (state, action) => {
-            state.trips = [...state.trips, action.payload.trip ]
+            state.trips = [...state.trips, action.payload.trip]
         },
         updateTrips: (state, action) => {
             state.trips = action.payload.trips

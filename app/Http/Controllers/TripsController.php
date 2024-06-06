@@ -66,6 +66,7 @@ class TripsController extends Controller
 
 
         $trip = Trip::factory()->state($request->all())->create();
+        $trip = Trip::where('id', $trip->id)->with(['task', 'truck', 'driver.user'])->first();
         return response()->json([
             'status' => 200,
             'res'    => 'Trip created successfully!',
