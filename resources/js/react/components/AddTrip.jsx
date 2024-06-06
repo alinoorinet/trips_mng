@@ -36,11 +36,8 @@ export default function AddTrip() {
         driver_id: '',
         task_id: '',
     });
-
     const dispatch = useDispatch();
 
-    /*console.log("formErr", formErr)
-    console.log("form", form)*/
     useEffect(() => {
         if(!isFetching) {
             if(data) {
@@ -117,7 +114,6 @@ export default function AddTrip() {
             if(res.data) {
                 if (res.data.status === 200) {
                     alert(res.data.res)
-                    console.log("res.data.trip", res.data.trip)
                     dispatch(addTrip({
                         trip: res.data.trip
                     }))

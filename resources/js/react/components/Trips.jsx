@@ -14,10 +14,9 @@ import {Link} from "react-router-dom";
 export default function Trips() {
     const {data, error, isFetching, isLoading, currentData}   = useFetchingTripsQuery({ refetchOnMountOrArgChange: true });
     const [currentTab, setCurrentTab] = useState('home');
-    const dispatch   = useDispatch();
+    const dispatch = useDispatch();
     const trips = useSelector((state) => state.trips.trips);
-    console.log("isLoading", isLoading)
-    console.log("currentData", currentData)
+
     useEffect(() => {
         if(!isFetching) {
             if(data) {
