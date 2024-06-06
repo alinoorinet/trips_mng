@@ -1,13 +1,11 @@
 import React, {useState, useEffect} from 'react'
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import {updateTasks} from "../redux/slices/taskSlice.js";
+import {updateTrips, setTab} from "../redux/slices/tripSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import {useFetchingTripsQuery} from "../api/trips.js";
 import {Link} from "react-router-dom";
@@ -15,20 +13,20 @@ import {Link} from "react-router-dom";
 
 export default function Trips() {
     const {data, error, isFetching} = useFetchingTripsQuery();
-    const [currentTab, setCurrentTab] = useState('home');
-    const dispatch= useDispatch();
-    // const tasksStore = useSelector((state) => state.tasks.tasks);
-    const [trips, setTrips]   = useState([])
+    const [currentTab, setCurrentTab] = useState('home',);
+    const dispatch   = useDispatch();
+    const tripsStore = useSelector((state) => state.trips.trips);
+    const [trips, setTrips] = useState([])
 
     useEffect(() => {
         if(!isFetching) {
             if(data) {
-                /*if(data.status === 200)
-                    dispatch(updateTasks({
-                        tasks: data.tasks,
+                if(data.status === 200)
+                    dispatch(updateTrips({
+                        trips: data.trips,
                     }));
                 else
-                    alert('Fetching trips failed')*/
+                    alert('Fetching trips failed')
             }
             else if(error) {
                 alert('Fetching trips failed. Back Err. Please try later')
@@ -37,11 +35,21 @@ export default function Trips() {
         }
     }, [isFetching]);
 
-    /*useEffect(() => {
+    useEffect(() => {
         // console.log("tasksStore:", tasksStore)
-        setTasks(tasksStore)
-    }, [tasksStore, dispatch])*/
-    console.log("trips:", trips)
+        setTrips(tripsStore)
+        if (tripsStore.length)
+            setCurrentTabEvent('trip-tab-' +tripsStore[0].id)
+    }, [tripsStore, dispatch])
+
+    const setCurrentTabEvent = (id) => {
+        dispatch(setTab({
+            currentTab: id
+        }))
+        setCurrentTab(id)
+    }
+
+    console.log("tripsStore:", tripsStore)
     return (
         <Col md={8}>
             <Card>
@@ -54,13 +62,48 @@ export default function Trips() {
                     <Tabs
                         id="controlled-tab-example"
                         activeKey={currentTab}
-                        onSelect={(k) => setCurrentTab(k)}
+                        onSelect={(k) => setCurrentTabEvent(k)}
                         className="mb-3"
                     >
                         { trips.length ?
                             trips.map((trip, index) => (
-                                <Tab eventKey={'trip-tab' + trip.id} title={trip.destination_addr}>
-                                    {trip.destination_addr}
+                                <Tab
+                                    key={'trip-tab-' + trip.id}
+                                    eventKey={'trip-tab-' + trip.id}
+                                    title={trip.destination_addr}
+                                >
+                                    <Table striped bordered hover responsive size="sm">
+                                        <tbody>
+                                            <tr>
+                                                <td style={{"width": "20%"}}><strong>Destination</strong></td>
+                                                <td>{trip.destination_addr}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={{"width": "20%"}}><strong>Customer</strong></td>
+                                                <td>{trip.customer_name}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={{"width": "20%"}}><strong>Content</strong></td>
+                                                <td>{trip.load_content}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={{"width": "20%"}}><strong>Load Weight(kg)</strong></td>
+                                                <td>{trip.load_weight}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={{"width": "20%"}}><strong>Truck</strong></td>
+                                                <td>{trip.truck.type}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={{"width": "20%"}}><strong>Driver</strong></td>
+                                                <td>{trip.driver.user.name}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={{"width": "20%"}}><strong>Task</strong></td>
+                                                <td>{trip.task? trip.task.title : ''}</td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
                                 </Tab>
                             ))
                             :

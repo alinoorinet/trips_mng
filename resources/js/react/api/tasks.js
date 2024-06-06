@@ -7,18 +7,20 @@ export const apiSlice = core.injectEndpoints({
                 query: () => `/tasks`,
                 keepUnusedDataFor: 0
             }),
-            /*deleteCustomer: builder.mutation({
-                query: (id) => ({
-                    url: `/customer/delete/${id}`,
-                    method: 'GET',
-                    //body: credential,
+            assignToTrip: builder.mutation({
+                query: (data) => ({
+                    url: `/tasks/assign`,
+                    method: 'POST',
+                    body: data,
                 }),
-            }),*/
+                keepUnusedDataFor: 0
+            }),
         }
     },
     overrideExisting: false,
 });
 
 export const {
-    useFetchingTasksQuery
+    useFetchingTasksQuery,
+    useAssignToTripMutation,
 } = apiSlice

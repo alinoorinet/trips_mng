@@ -16,10 +16,21 @@ class Trip extends Model
         'end_at',
         'load_content',
         'load_weight',
-        'load_id',
         'destination_addr',
         'task_id',
         'driver_id',
         'truck_id',
     ];
+
+    public function task() {
+        return $this->belongsTo(Task::class, 'task_id');
+    }
+
+    public function driver() {
+        return $this->belongsTo(Driver::class, 'driver_id');
+    }
+
+    public function truck() {
+        return $this->belongsTo(Truck::class, 'truck_id');
+    }
 }

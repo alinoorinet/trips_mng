@@ -1,25 +1,23 @@
 import React, {useState, useEffect} from 'react'
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import Table from 'react-bootstrap/Table';
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
-import {updateTasks} from "../redux/slices/taskSlice.js";
+import Spinner from 'react-bootstrap/Spinner';
+import {addTrip} from "../redux/slices/tripSlice.js";
 import { useDispatch, useSelector } from "react-redux";
-import {useFetchingAddTripInitQuery} from "../api/trips.js";
+import {useFetchingAddTripInitQuery, useStoreTripMutation} from "../api/trips.js";
 import Form from "react-bootstrap/Form";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 export default function AddTrip() {
     const {data, error, isFetching} = useFetchingAddTripInitQuery()
+    const [storeTrip, storeTripResult] = useStoreTripMutation()
+
     const [init, setInit] = useState({
         tasks: [], drivers: [], trucks: []
     })
-
+    const [isLoading, setIsLoading] = useState(false);
     const [form, setForm] = useState({
         customer_name: '',
         load_content: '',
@@ -38,8 +36,11 @@ export default function AddTrip() {
         driver_id: '',
         task_id: '',
     });
-    console.log("formErr", formErr)
-    console.log("form", form)
+
+    const dispatch = useDispatch();
+
+    /*console.log("formErr", formErr)
+    console.log("form", form)*/
     useEffect(() => {
         if(!isFetching) {
             if(data) {
@@ -93,63 +94,67 @@ export default function AddTrip() {
             setFormErr({...formErr, truck_id: "choose truck"});
             return false;
         }
+        if (isNaN(form.truck_id)) {
+            setFormErr({...formErr, truck_id: "trip's truck is invalid"});
+            return false;
+        }
         if (form.driver_id === "") {
             setFormErr({...formErr, driver_id: "choose trip driver"});
             return false;
         }
-        if (form.task_id === "") {
-            setFormErr({...formErr, task_id: "choose trip task"});
+        if (isNaN(form.driver_id)) {
+            setFormErr({...formErr, driver_id: "trip's driver is invalid"});
+            return false;
+        }
+        if (form.task_id !== "" && isNaN(form.task_id)) {
+            setFormErr({...formErr, task_id: "trip's task is invalid"});
             return false;
         }
 
-        /*let source = IsMobile();
-
-        const formData = new FormData();
-        formData.append('ticket_id', form.ticket_id);
-        formData.append('department_id', form.department_id);
-        formData.append('group_id', form.group_id);
-        formData.append('subject', form.subject);
-        formData.append('source', source? '1': '0');
-        formData.append('text', form.text);
-        formData.append('priority', form.priority);
-        formData.append('is_private', form.is_private);
-        formData.append('attach', form.attach);
-
         setIsLoading(true);
-        storeTicket(formData).then((res) => {
+        storeTrip(form).then((res) => {
             setIsLoading(false);
             if(res.data) {
                 if (res.data.status === 200) {
-                    toast.success(res.data.res);
-                    setTimeout(() => {
-                        history.push(`/${currentUser.company.name}/tickets`);
-                    },1500)
+                    alert(res.data.res)
+                    dispatch(addTrip({
+                        trip: res.data.trip
+                    }))
+                    setForm({
+                        customer_name: '',
+                        load_content: '',
+                        load_weight: '',
+                        destination_addr: '',
+                        truck_id: '',
+                        driver_id: '',
+                        task_id: '',
+                    })
                 }
                 else if(res.data.status === 102)
-                    toast.error(res.data.error);
+                    alert(res.data.error);
                 else if(res.data.status === 101) {
                     const errors = res.data.errors;
-                    if(errors.department_id)
-                        setFormErr({...formErr,department_id:errors.department_id[0]});
-                    if(errors.group_id)
-                        setFormErr({...formErr,group_id:errors.group_id[0]});
-                    if(errors.subject)
-                        setFormErr({...formErr,subject:errors.subject[0]});
-                    if(errors.text)
-                        setFormErr({...formErr,text:errors.text[0]});
-                    if(errors.priority)
-                        setFormErr({...formErr,priority:errors.priority[0]});
-                    if(errors.is_private)
-                        setFormErr({...formErr,is_private:errors.is_private[0]});
-                    if(errors.attach)
-                        setFormErr({...formErr,attach:errors.attach[0]});
+                    if(errors.customer_name)
+                        setFormErr({...formErr,customer_name:errors.customer_name[0]});
+                    if(errors.load_content)
+                        setFormErr({...formErr,load_content:errors.load_content[0]});
+                    if(errors.load_weight)
+                        setFormErr({...formErr,load_weight:errors.load_weight[0]});
+                    if(errors.destination_addr)
+                        setFormErr({...formErr,destination_addr:errors.destination_addr[0]});
+                    if(errors.task_id)
+                        setFormErr({...formErr,task_id:errors.task_id[0]});
+                    if(errors.driver_id)
+                        setFormErr({...formErr,driver_id:errors.driver_id[0]});
+                    if(errors.truck_id)
+                        setFormErr({...formErr,truck_id:errors.truck_id[0]});
                 }
             }
             else if (res.error) {
                 if(res.error.status === "FETCH_ERROR")
-                    toast.error("خطای ارتباط با سرور. لطفاً ضمن اطمینان از اتصال به اینترنت، دقایق دیگر دوباره تلاش کنید.")
+                    alert("Unexpected error. Please try later")
             }
-        });*/
+        });
     };
 
     return (
@@ -219,7 +224,7 @@ export default function AddTrip() {
                             <Form.Select
                                 aria-label="Default select example"
                                 value={form.truck_id}
-                                onChange={(e) => setForm({...form, truck_id: e.target.value})}
+                                onChange={(e) => setForm({...form, truck_id: parseInt(e.target.value)})}
                             >
                                 <option>choose...</option>
                                 {init.trucks.map(truck =>
@@ -241,7 +246,7 @@ export default function AddTrip() {
                             <Form.Select
                                 aria-label="Default select example"
                                 value={form.driver_id}
-                                onChange={(e) => setForm({...form, driver_id: e.target.value})}
+                                onChange={(e) => setForm({...form, driver_id: parseInt(e.target.value)})}
                             >
                                 <option>choose...</option>
                                 {init.drivers.map(driver =>
@@ -263,7 +268,7 @@ export default function AddTrip() {
                             <Form.Select
                                 aria-label="Default select example"
                                 value={form.task_id}
-                                onChange={(e) => setForm({...form, task_id: e.target.value})}
+                                onChange={(e) => setForm({...form, task_id: parseInt(e.target.value)})}
                             >
                                 <option>choose...</option>
                                 {init.tasks.map(task =>
@@ -274,16 +279,30 @@ export default function AddTrip() {
                                 )}
                             </Form.Select>
                             <Form.Text className="text-muted">
-                                The tasks in the list are not assigned to the mission.
+                                The tasks in the list are not assigned to the mission.<br />
+                            </Form.Text>
+                            <Form.Text className="text-muted">
+                                this field is <strong className="text-info">optional</strong>. you can also assign task in the index
                             </Form.Text>
                             {formErr.task_id &&
                             <strong className="invalid-feedback font15 d-block">{formErr.task_id}</strong>
                             }
                         </Form.Group>
-
-                        <Button variant="primary" type="submit" className="mb-3">
-                            Submit
-                        </Button>
+                        {!isLoading ?
+                            <Button variant="primary" type="submit" className="mb-3">
+                                Submit
+                            </Button> :
+                            <Button variant="primary" disabled className="mb-3">
+                                <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />
+                                <span className="visually-hidden">Loading...</span>
+                            </Button>
+                        }
                     </Form>
                 </Card.Body>
             </Card>

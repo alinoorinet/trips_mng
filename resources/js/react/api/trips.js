@@ -11,13 +11,14 @@ export const apiSlice = core.injectEndpoints({
                 query: () => `/trips/add`,
                 keepUnusedDataFor: 0
             }),
-            /*deleteCustomer: builder.mutation({
-                query: (id) => ({
-                    url: `/customer/delete/${id}`,
-                    method: 'GET',
-                    //body: credential,
+            storeTrip: builder.mutation({
+                query: (data) => ({
+                    url: `/trips/store`,
+                    method: 'POST',
+                    body: data,
                 }),
-            }),*/
+                keepUnusedDataFor: 0
+            }),
         }
     },
     overrideExisting: false,
@@ -26,4 +27,5 @@ export const apiSlice = core.injectEndpoints({
 export const {
     useFetchingTripsQuery,
     useFetchingAddTripInitQuery,
+    useStoreTripMutation,
 } = apiSlice
