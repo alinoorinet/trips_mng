@@ -40,5 +40,6 @@ npm install
 ```
 
 ## Demo image
-<img src="https://evl.ilam.ac.ir/img/demo.png">
+
+<p align="center"><img src="https://evl.ilam.ac.ir/img/demo.png" /></p>
 
