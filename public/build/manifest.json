@@ -1,8 +1,11 @@
 {
   "resources/js/app.jsx": {
-    "file": "assets/app-DLZC5lim.js",
+    "file": "assets/app-C-IRo-aN.js",
     "name": "app",
     "src": "resources/js/app.jsx",
-    "isEntry": true
+    "isEntry": true,
+    "css": [
+      "assets/app-DUEfxN0n.css"
+    ]
   }
 }
