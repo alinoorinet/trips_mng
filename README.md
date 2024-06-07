@@ -1,12 +1,10 @@
-<p align="center"><a href="https://stki.ir" target="_blank"><img src="https://cdn-icons-png.freepik.com/512/974/974593.png" width="200"></a></p>
+<p align="center"><a href="https://evl.ilam.ac.ir" target="_blank"><img src="https://cdn-icons-png.freepik.com/512/974/974593.png" width="200"></a></p>
 
 ## About Trip Management
 
 We have some pre-defined tasks, drivers and trucks. We create new trip and then assign task to it.
 
-- [Online Demo](https://stki.ir).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [Online Demo](https://evl.ilam.ac.ir).
 
 ## Setup instructions
 
@@ -42,5 +40,5 @@ npm install
 ```
 
 ## Demo image
-<img src="https://stki.ir/img/demo.png">
+<img src="https://evl.ilam.ac.ir/img/demo.png">
 
