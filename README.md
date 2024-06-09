@@ -1,10 +1,10 @@
-<p align="center"><a href="https://evl.ilam.ac.ir" target="_blank"><img src="https://cdn-icons-png.freepik.com/512/974/974593.png" width="200"></a></p>
+<p align="center"><a href="https://tripsmng.ilam.ac.ir" target="_blank"><img src="https://cdn-icons-png.freepik.com/512/974/974593.png" width="200"></a></p>
 
 ## About Trip Management
 
 We have some pre-defined tasks, drivers and trucks. We create new trip and then assign task to it.
 
-- [Online Demo](https://evl.ilam.ac.ir).
+- [Online Demo](https://tripsmng.ilam.ac.ir).
 
 ## Setup instructions
 
@@ -41,5 +41,5 @@ npm install
 
 ## Demo image
 
-<p align="center"><img src="https://evl.ilam.ac.ir/img/demo.png" /></p>
+<p align="center"><img src="https://tripsmng.ilam.ac.ir/img/demo.png" /></p>
 
