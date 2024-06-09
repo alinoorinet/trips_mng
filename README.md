@@ -2,9 +2,10 @@
 
 ## About Trip Management
 
-We have some pre-defined tasks, drivers and trucks. We create new trip and then assign task to it.
+We have some pre-defined tasks(50 records), drivers(10) and trucks(10). We create new trip and then assign task to it. Every trips can have only one task and conversely. In add trip form we can see only drivers and trucks that not in mission at the moment.
 
 - [Online Demo](https://tripsmng.ilam.ac.ir).
+- [Dockerized Version](https://github.com/alinoorinet/trips_dockerize).
 
 ## Setup instructions
 
