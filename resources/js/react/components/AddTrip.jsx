@@ -8,12 +8,15 @@ import { useDispatch, useSelector } from "react-redux";
 import {useFetchingAddTripInitQuery, useStoreTripMutation} from "../api/trips.js";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
+import {updateTasks} from "../redux/slices/taskSlice.js";
 
 
 export default function AddTrip() {
     const {data, error, isFetching} = useFetchingAddTripInitQuery()
     const [storeTrip, storeTripResult] = useStoreTripMutation()
 
+    const state = useSelector((state) => state);
+    const tasks   = state.tasks.tasks
     const [init, setInit] = useState({
         tasks: [], drivers: [], trucks: []
     })
@@ -116,6 +119,14 @@ export default function AddTrip() {
                     alert(res.data.res)
                     dispatch(addTrip({
                         trip: res.data.trip
+                    }))
+                    const newTasks = tasks.map((task,index) => {
+                        if (task.id === form.task_id)
+                            return {...task, assigned: 1}
+                        return task
+                    })
+                    dispatch(updateTasks({
+                        tasks: newTasks
                     }))
                     setForm({
                         customer_name: '',

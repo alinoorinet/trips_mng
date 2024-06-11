@@ -64,9 +64,12 @@ class TripsController extends Controller
                 'errors' => $v->errors()
             ]);
 
-
         $trip = Trip::factory()->state($request->all())->create();
         $trip = Trip::where('id', $trip->id)->with(['task', 'truck', 'driver.user'])->first();
+
+        if ($request->has('task_id'))
+            $trip->task()->update(['assigned' => 1]);
+
         return response()->json([
             'status' => 200,
             'res'    => 'Trip created successfully!',
